@@ -10,7 +10,7 @@ class Vault{
     static void createVault(Scanner sc){
         System.out.print("Enter the name of vault: ");
         String vaultName = sc.nextLine().toLowerCase();
-        String filePath = "../vaults/" + vaultName + ".txt";
+        String filePath = "vaults/" + vaultName + ".txt";
         File file = new File(filePath);
         if(file.exists()){
             System.out.println("Vault exists. Enter a different name.");
@@ -30,7 +30,7 @@ class Vault{
         System.out.print("Enter the name of vault: ");
         String vaultName = sc.nextLine().toLowerCase();
         Vault v = new Vault(vaultName);
-        String filePath = "../vaults/"+vaultName+".txt";
+        String filePath = "vaults/"+vaultName+".txt";
         File file = new File(filePath);
         if(!file.exists()){
             System.out.println("Vault "+vaultName+" doesn't exist.");
@@ -69,7 +69,7 @@ class Vault{
         /*
             Encrypt the credentials and everything after adding.
         */
-        String filePath = "../vaults/"+this.vaultName+".txt";
+        String filePath = "vaults/"+this.vaultName+".txt";
         try {
             FileWriter vault = new FileWriter(filePath, true);
             vault.write(name+","+site+","+username+","+password+"\n");

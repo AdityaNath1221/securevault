@@ -1,7 +1,12 @@
+import java.io.File;
 import java.util.Scanner;
 class PasswordManager{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
+        File dir = new File("vaults");
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
         int ch;
         Vault v = null;
         System.out.println("===PASSWORD MANAGER===");
@@ -47,7 +52,6 @@ class PasswordManager{
                 case 5:
                     if(v!=null){
                         v = null;
-                        vaultOpened = 0;
                         System.out.println("Vault closed.");
                     }
                     else{
