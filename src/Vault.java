@@ -17,19 +17,20 @@ class Vault{
             return;
         }
         try {
+            System.out.print("Enter Master Passoword: ");
+            String MPass = sc.nextLine();
             FileWriter vault = new FileWriter(filePath);
+            vault.write(MPass+"\n");
             vault.close();
             System.out.println("New vault " + vaultName + " created.");
         } catch (IOException e) {
             System.out.println("Error creating vault.");
-            e.printStackTrace();
         }
     }
 
     static Vault openVault(Scanner sc){
         System.out.print("Enter the name of vault: ");
         String vaultName = sc.nextLine().toLowerCase();
-        Vault v = new Vault(vaultName);
         String filePath = "vaults/"+vaultName+".txt";
         File file = new File(filePath);
         if(!file.exists()){
@@ -38,21 +39,32 @@ class Vault{
         }
         try{
             Scanner reader = new Scanner(file);
-            while(reader.hasNextLine()){
-                String line = reader.nextLine();
-                String[] parts = line.split(",");
-                if(parts.length == 4){
-                    Entry e = new Entry(parts[0], parts[1], parts[2], parts[3]);
-                    v.entries.add(e);
+            System.out.print("Enter your Master Password: ");
+            String MPass = sc.nextLine();
+            String OMPass = reader.nextLine();
+            if(MPass.equals(OMPass)){
+                Vault v = new Vault(vaultName);
+                while(reader.hasNextLine()){
+                    String line = reader.nextLine();
+                    String[] parts = line.split(",");
+                    if(parts.length == 4){
+                        Entry e = new Entry(parts[0], parts[1], parts[2], parts[3]);
+                        v.entries.add(e);
+                    }
                 }
+                reader.close();
+                System.out.println("Vault "+vaultName+" has been opened.");
+                return v;
             }
-            reader.close();
-            System.out.println("Vault "+vaultName+" has been opened.");
+            else{
+                System.out.println("Wrong Master Password!");
+                reader.close();
+            }
         }
         catch(IOException e){
             System.out.println("Error while reading file contents.");
         }
-        return v;
+        return null;
     }
 
     void addEntry(Scanner sc){
