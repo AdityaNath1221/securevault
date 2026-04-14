@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 class Vault{
+    String MPass;
     String vaultName;
     ArrayList<Entry> entries = new ArrayList<>();
 
@@ -48,12 +49,13 @@ class Vault{
                     String line = reader.nextLine();
                     String[] parts = line.split(",");
                     if(parts.length == 4){
-                        Entry e = new Entry(parts[0], parts[1], parts[2], parts[3]);
+                        Entry e = new Entry(Encryption.decrypt(parts[0], MPass), Encryption.decrypt(parts[1], MPass), Encryption.decrypt(parts[2], MPass), Encryption.decrypt(parts[3], MPass));
                         v.entries.add(e);
                     }
                 }
                 reader.close();
                 System.out.println("Vault "+vaultName+" has been opened.");
+                v.MPass = MPass;
                 return v;
             }
             else{
@@ -61,7 +63,7 @@ class Vault{
                 reader.close();
             }
         }
-        catch(IOException e){
+        catch(Exception e){
             System.out.println("Error while reading file contents.");
         }
         return null;
@@ -78,15 +80,12 @@ class Vault{
         String password = sc.nextLine();
         Entry entry = new Entry(name, site, username, password);
         this.entries.add(entry);
-        /*
-            Encrypt the credentials and everything after adding.
-        */
         String filePath = "vaults/"+this.vaultName+".txt";
         try {
             FileWriter vault = new FileWriter(filePath, true);
-            vault.write(name+","+site+","+username+","+password+"\n");
+            vault.write(Encryption.encrypt(name, this.MPass)+","+Encryption.encrypt(site, this.MPass)+","+Encryption.encrypt(username, this.MPass)+","+Encryption.encrypt(password, this.MPass)+"\n");
             vault.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Error adding entry.");
             e.printStackTrace();
         }
