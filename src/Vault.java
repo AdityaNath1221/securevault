@@ -20,7 +20,7 @@ class Vault{
             System.out.print("Enter Master Passoword: ");
             String MPass = sc.nextLine();
             FileWriter vault = new FileWriter(filePath);
-            vault.write(MPass+"\n");
+            vault.write(Hashing.getHash(MPass)+"\n");
             vault.close();
             System.out.println("New vault " + vaultName + " created.");
         } catch (IOException e) {
@@ -42,7 +42,7 @@ class Vault{
             System.out.print("Enter your Master Password: ");
             String MPass = sc.nextLine();
             String OMPass = reader.nextLine();
-            if(MPass.equals(OMPass)){
+            if(Hashing.getHash(MPass).equals(OMPass)){
                 Vault v = new Vault(vaultName);
                 while(reader.hasNextLine()){
                     String line = reader.nextLine();

@@ -21,9 +21,3 @@ class Hashing{
         }
     }
 }
-
-class Demo{
-    public static void main(String[] args) {
-        System.out.print(Hashing.getHash("1"));
-    }
-}
